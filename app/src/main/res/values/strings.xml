@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Simple Tweets</string>
+    <string name="create_title">Create New Tweet</string>
+    <string name="action_add">Add</string>
+    <string name="login_label">Connect to Twitter</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="Tweet">Tweet</string>
+    <string name="Cancel">Cancel</string>
+
+</resources>
