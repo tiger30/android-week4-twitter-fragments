@@ -22,34 +22,19 @@ import java.util.List;
 /**
  * Created by barbara on 2/21/16.
  */
-public class TweetsListFragment extends Fragment{
+public abstract class TweetsListFragment extends Fragment{
     private ArrayList<Tweet> tweets;
     private TweetsAdapter adapter;
     private RecyclerView rvTweets;
     SwipeRefreshLayout swipeContainer;
-    OnTweetsScrollListener tweetsScrollListener;
 
-
-    public interface OnTweetsScrollListener {
-        public void populateTimeline(int page);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
-            tweetsScrollListener = (OnTweetsScrollListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() +
-                    " must implement OnTweetsScrollListener");
-        }
-    }
 
     @Override
     @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         setupViews(v);
+        populateList();
         return v;
     }
 
@@ -68,7 +53,7 @@ public class TweetsListFragment extends Fragment{
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                tweetsScrollListener.populateTimeline(page);
+                loadMore(page, totalItemsCount);
             }
         });
 
@@ -77,7 +62,7 @@ public class TweetsListFragment extends Fragment{
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                tweetsScrollListener.populateTimeline(-1);
+                refreshList();
             }
         });
     }
@@ -107,6 +92,10 @@ public class TweetsListFragment extends Fragment{
     public void addOrInsertAll(List<Tweet> tweets) {
         adapter.addOrInsertAll(tweets);
     }
+
+    abstract void populateList();
+    abstract void loadMore(int page, int totalItemsCount);
+    abstract void refreshList();
 
 
 }

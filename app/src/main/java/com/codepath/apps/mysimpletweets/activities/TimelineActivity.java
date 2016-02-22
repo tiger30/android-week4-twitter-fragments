@@ -26,13 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class TimelineActivity extends AppCompatActivity
-        implements CreateTweetFragment.OnNewTweetCreatedListener,
-        TweetsListFragment.OnTweetsScrollListener  {
-
-    private TweetsListFragment fragmentTweetsList;
-    private static final int PAGE_REFRESH = -1;
-    private static final int PAGE_NEW = 0;
-    private TwitterClient client;
+        implements CreateTweetFragment.OnNewTweetCreatedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +41,6 @@ public class TimelineActivity extends AppCompatActivity
             showSnackbar("Oops!  Please check internet connection!");
             return;
         }
-
-        if (fragmentTweetsList == null) {
-            fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().
-                    findFragmentById(R.id.fragment_timeline);
-        }
-
-        client = TwitterApplication.getTwitterClient();
-        populateTimeline(PAGE_NEW);
     }
 
     @Override
@@ -96,54 +82,25 @@ public class TimelineActivity extends AppCompatActivity
     }
 
     public void createTweet(String tweetBody) {
-        client.createSimpleTweet(tweetBody, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                List<Tweet> tweets = new ArrayList();
-//                tweets.add(Tweet.fromJSON(response));
-//                adapter.insertAll(tweets);
-//                populateTimeline(PAGE_REFRESH);
-                populateTimeline(PAGE_NEW);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
-                                  JSONObject errorResponse) {
-                Toast.makeText(TimelineActivity.this, errorResponse.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
+//        client.createSimpleTweet(tweetBody, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+////                List<Tweet> tweets = new ArrayList();
+////                tweets.add(Tweet.fromJSON(response));
+////                adapter.insertAll(tweets);
+////                populateTimeline(PAGE_REFRESH);
+//                populateTimeline(PAGE_NEW);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
+//                                  JSONObject errorResponse) {
+//                Toast.makeText(TimelineActivity.this, errorResponse.toString(), Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 
-    public void populateTimeline(int page) {
-        Tweet mostRecentTweet = null;
-        Tweet oldestTweet = null;
-        fragmentTweetsList.setRefreshing(true);
-        if (page < 0) {
-            mostRecentTweet = fragmentTweetsList.getMostRecentTweet();
-        } else if (page > 0) {
-            oldestTweet = fragmentTweetsList.getOldestTweet();
-        } else {
-            fragmentTweetsList.clear();
-        }
-        client.getHomeTimeline(mostRecentTweet, oldestTweet, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                fragmentTweetsList.addOrInsertAll(Tweet.fromJSONArray(response));
-                fragmentTweetsList.setRefreshing(false);
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                try {
-                    Log.d("ERROR", errorResponse.toString());
-                    Toast.makeText(TimelineActivity.this, errorResponse.toString(), Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                fragmentTweetsList.setRefreshing(false);
-            }
-        });
-    }
 
     private void showSnackbar(String message) {
         final Snackbar snackBar = Snackbar.make(findViewById(R.id.root_layout),
