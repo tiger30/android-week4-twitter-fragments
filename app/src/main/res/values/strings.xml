@@ -4,9 +4,12 @@
     <string name="app_name">Simple Tweets</string>
     <string name="create_title">Create New Tweet</string>
     <string name="action_add">Add</string>
+    <string name="action_profile">Profile</string>
     <string name="login_label">Connect to Twitter</string>
     <string name="title_activity_timeline">TimelineActivity</string>
     <string name="Tweet">Tweet</string>
     <string name="Cancel">Cancel</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

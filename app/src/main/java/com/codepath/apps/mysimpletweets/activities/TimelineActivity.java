@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -49,18 +50,18 @@ public class TimelineActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                FragmentManager fm = getSupportFragmentManager();
-                CreateTweetFragment createTweetDialog = CreateTweetFragment.newInstance();
-                createTweetDialog.show(fm, "wat???");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_add:
+//                FragmentManager fm = getSupportFragmentManager();
+//                CreateTweetFragment createTweetDialog = CreateTweetFragment.newInstance();
+//                createTweetDialog.show(fm, "wat???");
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
 //
 //    private Boolean isNetworkAvailable() {
@@ -100,6 +101,16 @@ public class TimelineActivity extends AppCompatActivity
 //        });
     }
 
+    public void onCreateTweetView(MenuItem mi) {
+        FragmentManager fm = getSupportFragmentManager();
+        CreateTweetFragment createTweetDialog = CreateTweetFragment.newInstance();
+        createTweetDialog.show(fm, "wat???");
+    }
+
+    public void onProfileView(MenuItem mi) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
 
 
     private void showSnackbar(String message) {
