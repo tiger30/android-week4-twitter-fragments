@@ -2,26 +2,21 @@ package com.codepath.apps.mysimpletweets.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TwitterApplication;
-import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.fragments.CreateTweetFragment;
-import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
-import com.codepath.apps.mysimpletweets.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
+import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
 
 import java.io.IOException;
 
@@ -41,6 +36,11 @@ public class TimelineActivity extends AppCompatActivity
             showSnackbar("Oops!  Please check internet connection!");
             return;
         }
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(vpPager);
     }
 
     @Override
@@ -113,6 +113,34 @@ public class TimelineActivity extends AppCompatActivity
             }
         });
         snackBar.show();
+    }
+
+    public class TweetsPagerAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = { "Home", "Mentions" };
+        public TweetsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new HomeTimelineFragment();
+            } else if (position == 1) {
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
     }
 
 
