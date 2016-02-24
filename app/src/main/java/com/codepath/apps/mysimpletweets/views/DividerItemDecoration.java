@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

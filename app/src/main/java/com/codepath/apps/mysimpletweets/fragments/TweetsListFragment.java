@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codepath.apps.mysimpletweets.DividerItemDecoration;
+import com.codepath.apps.mysimpletweets.views.DividerItemDecoration;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsAdapter;

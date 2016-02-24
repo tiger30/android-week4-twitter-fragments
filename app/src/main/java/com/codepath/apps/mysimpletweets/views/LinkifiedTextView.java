@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.views;
 
 /**
  * Created by barbara on 2/20/16.
