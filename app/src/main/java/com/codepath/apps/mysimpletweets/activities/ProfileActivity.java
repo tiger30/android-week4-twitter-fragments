@@ -30,6 +30,16 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         client = TwitterApplication.getTwitterClient();
+
+        String screenName = getIntent().getStringExtra("screen_name");
+        if (savedInstanceState == null) {
+            UserTimelineFragment fragmentUserTimeline =
+                    UserTimelineFragment.newInstance(screenName);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flContainer, fragmentUserTimeline);
+            ft.commit();
+        }
+
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -39,15 +49,6 @@ public class ProfileActivity extends AppCompatActivity {
                 populateProfileHeader(user);
             }
         });
-
-        String screenName = getIntent().getStringExtra("screen_name");
-        if (savedInstanceState != null) {
-            UserTimelineFragment fragmentUserTimeline =
-                    UserTimelineFragment.newInstance(screenName);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flUserTimeline, fragmentUserTimeline);
-            ft.commit();
-        }
     }
 
     private void populateProfileHeader(User user) {

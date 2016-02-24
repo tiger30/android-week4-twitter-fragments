@@ -8,8 +8,8 @@
     tools:context="com.codepath.apps.mysimpletweets.activities.ProfileActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/rlUserHeader"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true">
@@ -28,8 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvTagline" />
-
-
 
     </RelativeLayout>
 
@@ -56,9 +54,9 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/flUserTimeline"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rlUserHeader"
+        android:id="@+id/flContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llCounts"
         android:layout_alignParentLeft="true" />
 </RelativeLayout>
