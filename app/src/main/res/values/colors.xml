@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#711AEB</color>
-    <color name="colorPrimaryDark">#1ADDEB</color>
+    <color name="colorPrimary">#1ADDEB</color>
+    <color name="colorPrimaryDark">#711AEB</color>
     <color name="colorAccent">#FF8870</color>
     <!--http://www.colourlovers.com/pattern/5108803/stare-->
     <color name="purple">#711AEB</color>

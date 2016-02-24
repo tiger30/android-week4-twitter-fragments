@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Simple Tweets</string>
+    <string name="app_name">Twitter</string>
     <string name="create_title">Create New Tweet</string>
     <string name="action_add">Add</string>
     <string name="action_profile">Profile</string>
