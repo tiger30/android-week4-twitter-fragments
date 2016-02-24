@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletweets.activities;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         client = TwitterApplication.getTwitterClient();
 
         String screenName = getIntent().getStringExtra("screen_name");
@@ -37,12 +39,14 @@ public class ProfileActivity extends AppCompatActivity {
             ft.commit();
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 user = User.fromJSON(response);
-                Toast.makeText(ProfileActivity.this, user.getScreenName(), Toast.LENGTH_LONG).show();
-                //getSupportActionBar().setTitle(user.getScreenName());
+                getSupportActionBar().setTitle("@" + user.getScreenName());
                 populateProfileHeader(user);
             }
         });

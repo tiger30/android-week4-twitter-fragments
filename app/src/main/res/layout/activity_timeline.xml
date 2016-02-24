@@ -38,6 +38,4 @@
         android:background="@android:color/white"
         android:layout_below="@+id/tabs"/>
 
-
-
 </RelativeLayout>

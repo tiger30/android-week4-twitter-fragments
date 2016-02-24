@@ -7,11 +7,26 @@
     android:fitsSystemWindows="true"
     tools:context="com.codepath.apps.mysimpletweets.activities.ProfileActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <RelativeLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/rlUserHeader"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/appbar"
         android:layout_alignParentLeft="true">
 
         <ImageView
@@ -30,7 +45,6 @@
             android:id="@+id/tvTagline" />
 
     </RelativeLayout>
-
 
     <LinearLayout
         android:id="@+id/llCounts"
