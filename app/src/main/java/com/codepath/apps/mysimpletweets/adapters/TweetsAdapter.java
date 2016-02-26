@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +27,26 @@ import java.util.List;
  * Created by barbara on 2/15/16.
  */
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
+
+    public interface TweetClickListener {
+        public abstract void onImageClick(String screenName);
+    }
+
+    public class ImageClickListener implements View.OnClickListener
+    {
+        private String screenName;
+        private TweetClickListener onClickListener;
+        public ImageClickListener(TweetClickListener listener, String screenName) {
+            this.screenName = screenName;
+            this.onClickListener = listener;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            onClickListener.onImageClick(screenName);
+        }
+    };
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -53,10 +75,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     // Store a member variable for the tweets
     private List<Tweet> mTweets;
     private Context context;
+    private TweetClickListener tweetClickListener;
 
     // Pass in the contact array into the constructor
-    public TweetsAdapter(List<Tweet> tweets) {
+    public TweetsAdapter(List<Tweet> tweets, TweetClickListener listener) {
         mTweets = tweets;
+        tweetClickListener = listener;
     }
 
     // Usually involves inflating a layout from XML and returning the holder
@@ -84,9 +108,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         Glide.with(context).load(tweet.getUser().getProfileImageUrl())
                 .into(viewHolder.ivProfileImage);
         viewHolder.tvUserName.setText(tweet.getUser().getName());
-        viewHolder.tvUserScreenName.setText("@" + tweet.getUser().getScreenName());
+        String screenName = tweet.getUser().getScreenName();
+        viewHolder.tvUserScreenName.setText("@" + screenName);
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTimeAgo.setText(tweet.getCreatedAtRelativeTimeAgo());
+
+        viewHolder.ivProfileImage.setOnClickListener(new ImageClickListener(tweetClickListener, screenName));
     }
 
     // Return the total count of items

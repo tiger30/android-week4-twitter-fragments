@@ -1,15 +1,20 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.views.DividerItemDecoration;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.adapters.EndlessRecyclerViewScrollListener;
@@ -22,7 +27,7 @@ import java.util.List;
 /**
  * Created by barbara on 2/21/16.
  */
-public abstract class TweetsListFragment extends Fragment{
+public abstract class TweetsListFragment extends Fragment {
     private ArrayList<Tweet> tweets;
     private TweetsAdapter adapter;
     private RecyclerView rvTweets;
@@ -41,7 +46,15 @@ public abstract class TweetsListFragment extends Fragment{
     private void setupViews(View view) {
         rvTweets = (RecyclerView) view.findViewById(R.id.rvTweets);
         tweets = new ArrayList<Tweet>();
-        adapter = new TweetsAdapter(tweets);
+        adapter = new TweetsAdapter(tweets, new TweetsAdapter.TweetClickListener() {
+            public void onImageClick(String screenName) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                if (screenName != null) {
+                    i.putExtra("screen_name", screenName);
+                }
+                startActivity(i);
+            }
+        });
         rvTweets.setAdapter(adapter);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,6 +109,5 @@ public abstract class TweetsListFragment extends Fragment{
     abstract void populateList();
     abstract void loadMore(int page, int totalItemsCount);
     abstract void refreshList();
-
 
 }

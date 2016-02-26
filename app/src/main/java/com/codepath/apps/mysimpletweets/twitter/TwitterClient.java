@@ -63,18 +63,32 @@ public class TwitterClient extends OAuthBaseClient {
 
 	// https://dev.twitter.com/rest/reference/get/statuses/mentions_timeline
 	// count, since_id, max_id,
-	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+	public void getMentionsTimeline(Tweet beforeThisTweet, Tweet afterThisTweet,
+									AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("count", 20);
+		if (beforeThisTweet != null) {
+			params.put("max_id", beforeThisTweet.getUid());
+		}
+		if (afterThisTweet != null) {
+			params.put("since_id", afterThisTweet.getUid());
+		}
 		client.get(apiUrl, params, handler);
 	}
 
 	// https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(String screenName, Tweet beforeThisTweet,
+                                Tweet afterThisTweet, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("count", 20);
+        if (beforeThisTweet != null) {
+            params.put("max_id", beforeThisTweet.getUid());
+        }
+        if (afterThisTweet != null) {
+            params.put("since_id", afterThisTweet.getUid());
+        }
         if (screenName != null) {
             params.put("screen_name", screenName);
         }
@@ -82,9 +96,25 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	// https://dev.twitter.com/rest/reference/get/account/verify_credentials
-	public void getUserInfo(AsyncHttpResponseHandler handler) {
+	public void getAccountInfo(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		client.get(apiUrl, null, handler);
+	}
+
+	// https://dev.twitter.com/rest/reference/get/users/lookup
+	public void getUsers(String commaSeparatedScreenNames, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/lookup.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", commaSeparatedScreenNames);
+		client.get(apiUrl, params, handler);
+	}
+
+	// https://dev.twitter.com/rest/reference/get/users/show
+	public void getUserInfo(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
 	}
 
 }

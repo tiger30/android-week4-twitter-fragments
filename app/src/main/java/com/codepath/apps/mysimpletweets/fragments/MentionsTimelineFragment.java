@@ -39,7 +39,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         } else {
             clear();
         }
-        client.getMentionsTimeline(new JsonHttpResponseHandler() {
+        client.getMentionsTimeline(mostRecentTweet, oldestTweet, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 addOrInsertAll(Tweet.fromJSONArray(response));
