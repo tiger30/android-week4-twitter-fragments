@@ -37,6 +37,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
     // https://dev.twitter.com/rest/reference/get/statuses/home_timeline
+    // max_id = "Get the tweets older than this number."
 	public void getHomeTimeline(Tweet beforeThisTweet, Tweet afterThisTweet,
                                 AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
