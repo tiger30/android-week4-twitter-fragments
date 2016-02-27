@@ -21,7 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.twitter.TwitterApplication;
+import com.codepath.apps.mysimpletweets.twitter.TwitterClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 /**
  * Created by barbara on 2/18/16.
@@ -30,7 +37,7 @@ public class CreateTweetFragment extends DialogFragment {
     public static final int MAX_COUNT = 140;
 
     public interface OnNewTweetCreatedListener {
-        public void createTweet(String tweetBody);
+        public void tweetCreated();
     }
 
     private OnNewTweetCreatedListener tweetCreatedListener;
@@ -66,21 +73,12 @@ public class CreateTweetFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-        // retrieve display dimensions
         Rect displayRectangle = new Rect();
         getDialog().getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
 
-// inflate and adjust layout
-        //LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.create_tweet, null);
         layout.setMinimumWidth((int)(displayRectangle.width() * 0.8f));
         layout.setMinimumHeight((int)(displayRectangle.height() * 0.8f));
-
-//        dialog.setView(layout);
-//
-//
-//        return inflater.inflate(R.layout.create_tweet, container);
         return layout;
     }
 
@@ -101,7 +99,7 @@ public class CreateTweetFragment extends DialogFragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tweetCreatedListener.createTweet(etTweetBody.getText().toString());
+                createTweet(etTweetBody.getText().toString());
                 getDialog().dismiss();
             }
         });
@@ -144,6 +142,22 @@ public class CreateTweetFragment extends DialogFragment {
                     btnSave.setBackgroundColor(grayColor);
                     btnSave.setTextColor(darkGrayColor);
                 }
+            }
+        });
+    }
+
+    public void createTweet(String tweetBody) {
+        TwitterClient client = TwitterApplication.getTwitterClient();
+        client.createSimpleTweet(tweetBody, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                tweetCreatedListener.tweetCreated();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
+                                  JSONObject errorResponse) {
+                Toast.makeText(getActivity(), errorResponse.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }

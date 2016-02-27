@@ -9,20 +9,28 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.fragments.CreateTweetFragment;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
 public class TimelineActivity extends AppCompatActivity
         implements CreateTweetFragment.OnNewTweetCreatedListener {
+
+    private TweetsPagerAdapter tweetsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,8 @@ public class TimelineActivity extends AppCompatActivity
         }
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(tweetsPagerAdapter);
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(vpPager);
     }
@@ -49,27 +58,6 @@ public class TimelineActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_add:
-//                FragmentManager fm = getSupportFragmentManager();
-//                CreateTweetFragment createTweetDialog = CreateTweetFragment.newInstance();
-//                createTweetDialog.show(fm, "wat???");
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-//
-//    private Boolean isNetworkAvailable() {
-//        ConnectivityManager connectivityManager
-//                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-//    }
 
     public boolean isOnline() {
         Runtime runtime = Runtime.getRuntime();
@@ -82,23 +70,8 @@ public class TimelineActivity extends AppCompatActivity
         return false;
     }
 
-    public void createTweet(String tweetBody) {
-//        client.createSimpleTweet(tweetBody, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-////                List<Tweet> tweets = new ArrayList();
-////                tweets.add(Tweet.fromJSON(response));
-////                adapter.insertAll(tweets);
-////                populateTimeline(PAGE_REFRESH);
-//                populateTimeline(PAGE_NEW);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable,
-//                                  JSONObject errorResponse) {
-//                Toast.makeText(TimelineActivity.this, errorResponse.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        });
+    public void tweetCreated() {
+        tweetsPagerAdapter.notifyDataSetChanged();
     }
 
     public void onCreateTweetView(MenuItem mi) {
@@ -111,7 +84,6 @@ public class TimelineActivity extends AppCompatActivity
         Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
     }
-
 
     private void showSnackbar(String message) {
         final Snackbar snackBar = Snackbar.make(findViewById(R.id.root_layout),
@@ -130,6 +102,11 @@ public class TimelineActivity extends AppCompatActivity
         private String tabTitles[] = { "Home", "Mentions" };
         public TweetsPagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        // http://stackoverflow.com/questions/7263291/viewpager-pageradapter-not-updating-the-view
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override
@@ -153,7 +130,5 @@ public class TimelineActivity extends AppCompatActivity
             return tabTitles.length;
         }
     }
-
-
 
 }
