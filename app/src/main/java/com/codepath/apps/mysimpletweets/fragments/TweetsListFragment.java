@@ -7,19 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
-import com.codepath.apps.mysimpletweets.views.DividerItemDecoration;
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.adapters.TweetsAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.views.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
