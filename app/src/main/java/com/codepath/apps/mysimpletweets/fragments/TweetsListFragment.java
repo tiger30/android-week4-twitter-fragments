@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.activities.ProfileActivity;
@@ -29,6 +31,7 @@ public abstract class TweetsListFragment extends Fragment {
     private TweetsAdapter adapter;
     private RecyclerView rvTweets;
     SwipeRefreshLayout swipeContainer;
+    ProgressBar progressBar;
 
 
     @Override
@@ -37,6 +40,13 @@ public abstract class TweetsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         setupViews(v);
         populateList();
+        progressBar = (ProgressBar) v.findViewById(R.id.pbLoading);
+        if (progressBar != null) {
+            Log.d("DEBUG", ">>>>>>>>>init PB OK");
+        } else {
+            Log.d("DEBUG", ">>>>>>>>>init PB NULL");
+        }
+
         return v;
     }
 
@@ -79,6 +89,14 @@ public abstract class TweetsListFragment extends Fragment {
 
     public void setRefreshing(boolean value) {
         swipeContainer.setRefreshing(value);
+        if (progressBar != null) {
+            Log.d("DEBUG", ">>>>>>>>>>>>>>>progressBar!");
+            if (value == true) {
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+            } else {
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+            }
+        }
     }
 
     public void clear() {
