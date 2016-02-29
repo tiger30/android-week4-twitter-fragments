@@ -40,13 +40,7 @@ public abstract class TweetsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tweets_list, container, false);
         setupViews(v);
         populateList();
-        progressBar = (ProgressBar) v.findViewById(R.id.pbLoading);
-        if (progressBar != null) {
-            Log.d("DEBUG", ">>>>>>>>>init PB OK");
-        } else {
-            Log.d("DEBUG", ">>>>>>>>>init PB NULL");
-        }
-
+        progressBar = (ProgressBar) getActivity().findViewById(R.id.pbLoading);
         return v;
     }
 
@@ -90,7 +84,6 @@ public abstract class TweetsListFragment extends Fragment {
     public void setRefreshing(boolean value) {
         swipeContainer.setRefreshing(value);
         if (progressBar != null) {
-            Log.d("DEBUG", ">>>>>>>>>>>>>>>progressBar!");
             if (value == true) {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             } else {

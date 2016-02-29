@@ -23,12 +23,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ProgressBar
-        android:id="@+id/pbLoading"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         app:pstsShouldExpand="true"
@@ -43,5 +37,13 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:layout_below="@+id/tabs"/>
+
+    <ProgressBar
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/pbLoading"/>
 
 </RelativeLayout>
